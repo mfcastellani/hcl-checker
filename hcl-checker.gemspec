@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['marcelo.castellani@totvs.com.br']
 
   spec.summary       = 'Hashicorp Configuration Language parser for Ruby'
-  spec.description   = 'This gem cam parse HCL version 1 and checks if syntax is ok.'
+  spec.description   = 'Hashicorp Configuration Language parser and checker for Ruby'
   spec.homepage      = 'https://github.com/mfcastellani/hcl-checker'
   spec.license       = 'MIT'
 
