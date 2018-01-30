@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'Hashicorp Configuration Language parser for Ruby'
   spec.description   = 'This gem cam parse HCL version 1 and checks if syntax is ok.'
-  spec.homepage      = ''
+  spec.homepage      = 'https://github.com/mfcastellani/hcl-checker'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
