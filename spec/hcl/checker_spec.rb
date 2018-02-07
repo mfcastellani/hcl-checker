@@ -66,6 +66,6 @@ RSpec.describe HCL::Checker do
                  '}' \
                  '}'
     ret = HCL::Checker.parse hcl_string
-    expect(ret).to be(nil)
+    expect(ret).to eq("Parse error at  \"enable_dns_hostnames\" , (invalid token: ,)")
   end
 end
