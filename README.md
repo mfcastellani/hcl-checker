@@ -33,6 +33,7 @@ hcl_string = 'provider "aws" {
     secret_key = "${var.aws_secret_key}"
 }
 
+# This is a awesome comment
 resource "aws_vpc" "default" {
   cidr_block = "10.0.0.0/16"
   enable_dns_hostnames = true
@@ -57,6 +58,13 @@ You can parse the `hcl_string` into a `Hash` with `parse` method.
  => {"provider"=>{"aws"=>{"region"=>"${var.aws_region}", "access_key"=>"${var.aws_access_key}", "secret_key"=>"${var.aws_secret_key}"}}, "resource"=>{"aws_vpc"=>{"default"=>{"cidr_block"=>"10.0.0.0/16", "enable_dns_hostnames"=>true, "tags"=>{"Name"=>"Event Store VPC"}}}}}
 ```
 
+If after a `parse` you got `false` you can check `last_error` with:
+
+```
+2.4.2 :063 > HCL::Checker.last_error
+ => "Parse error at  \"eec8b16c-ee89-4ea0-bdcc-d094300a42e8\" , (invalid token: ,)"
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run
@@ -69,12 +77,14 @@ release a new version, update the version number in `version.rb`, and then run
 git commits and tags, and push the `.gem` file to
 [rubygems.org](https://rubygems.org).
 
-### Lexer
-  - Built using the `rexical` library (https://github.com/tenderlove/rexical)
-  
-### Parser
-  - Built using the `racc` library (https://github.com/tenderlove/racc)
+### Bulding grammar
 
+```
+$ bundle exec rake build_grammar
+Building Lexer....done
+Building Parser....done
+```
+  
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at

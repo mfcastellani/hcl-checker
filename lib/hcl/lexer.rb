@@ -159,7 +159,7 @@ class HCLLexer
         result += text.chop + @ss.getch
         next
       end
-      result += text
+      result += text.to_s
     end until nested == 0 && text =~ %r{\"\z}
     result.chop
   end

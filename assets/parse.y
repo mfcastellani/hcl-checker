@@ -135,7 +135,8 @@ require_relative './lexer'
 
 
   def on_error(error_token_id, error_value, value_stack)
-    header = "parse error found on value: #{error_value}"
+    error_message = value_stack.to_s.split(',').last.gsub(']', '')
+    header = "Parse error at #{error_message} #{error_value} (invalid token: #{error_value})"
     raise Racc::ParseError, header
   end
 

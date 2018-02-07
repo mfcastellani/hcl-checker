@@ -4,6 +4,10 @@ require_relative 'parser'
 
 module HCL
   module Checker
+    class << self
+      attr_accessor :last_error
+    end
+
     def self.valid?(value)
       ret = HCLParser.new.parse(value)
       return true if ret.is_a? Hash
@@ -14,8 +18,11 @@ module HCL
 
     def self.parse(value)
       HCLParser.new.parse(value)
+    rescue Racc::ParseError => e
+      self.last_error = e.message
+      return false
     rescue
-      nil
+      false
     end
   end
 end

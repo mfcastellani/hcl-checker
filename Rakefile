@@ -7,12 +7,13 @@ RSpec::Core::RakeTask.new do |c|
   c.rspec_opts = options
 end
 
-desc "Generate HCL Lexer"
-task :lexer do
+desc "Generate Grammar files for HCL"
+task :build_grammar do
+  print 'Building Lexer'
   `rex  ./assets/lexer.rex -o ./lib/hcl/lexer.rb`
+  print "....done\n"
+  print 'Building Parser'
+  `racc ./assets/parse.y -o ./lib/hcl/parser.rb`
+  print "....done\n\n"
 end
 
-desc "Generate HCL Parser"
-task :parser do
-  `racc ./assets/parse.y -o ./lib/parser.rb`
-end
