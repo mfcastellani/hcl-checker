@@ -19,8 +19,7 @@ module HCL
     def self.parse(value)
       HCLParser.new.parse(value)
     rescue Racc::ParseError => e
-      self.last_error = e.message
-      return false
+      return e.message
     rescue
       false
     end
