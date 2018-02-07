@@ -16,8 +16,6 @@ module HCL
       HCLParser.new.parse(value)
     rescue Racc::ParseError => e
       return e.message
-    rescue
-      false
     end
   end
 end
