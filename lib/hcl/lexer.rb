@@ -81,6 +81,9 @@ class HCLLexer
       when (text = @ss.scan(/\"/))
          action { [:STRING,       consume_string(text)] }
 
+      when (text = @ss.scan(/\<<-/))
+         action { [:STRING,       consume_heredoc] }
+
       when (text = @ss.scan(/\{/))
          action { [:LEFTBRACE,    text]}
 
@@ -162,5 +165,10 @@ class HCLLexer
       result += text.to_s
     end until nested == 0 && text =~ %r{\"\z}
     result.chop
+  end
+  def consume_heredoc
+      token = Regexp.new @ss.scan_until(%r{\n})
+      document = @ss.scan_until(token)
+      document.chop
   end
 end # class

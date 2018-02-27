@@ -68,4 +68,28 @@ RSpec.describe HCL::Checker do
     ret = HCL::Checker.parse hcl_string
     expect(ret).to eq("Parse error at  \"enable_dns_hostnames\" , (invalid token: ,)")
   end
+
+  context 'valid HCL with here document' do
+    hcl_string = %(
+                    custom_data = <<-EOF
+                      #!/bin/bash
+                      export CLOUD_ID=${var.org_id}
+                      export TOPOLOGY_ID=${var.topology_id}
+                    EOF
+                    provider "aws" {
+                      region = "${var.aws_region}"
+                      access_key = "${var.aws_access_key}"
+                      secret_key = "${var.aws_secret_key}"
+                    }
+                    resource "aws_vpc" "default" {
+                      cidr_block = "10.0.0.0/16"
+                      enable_dns_hostnames = true
+                      tags {
+                        Name = "Event Store VPC"
+                      }
+                    }
+                  )
+
+    it { expect(HCL::Checker.valid? hcl_string).to eq(true) }
+  end
 end
