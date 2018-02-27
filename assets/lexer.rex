@@ -20,6 +20,7 @@ macro
   RIGHTBRACE            \}
   LEFTBRACKET           \[
   RIGHTBRACKET          \]
+  HEREDOCUMENT          \<<-
 
 rule
 # [:state]      pattern                   [actions]
@@ -33,6 +34,7 @@ rule
                 {NUMBER}                  { [:NUMBER,       text.to_i] }
                 {FLOAT}                   { [:FLOAT,        text.to_f] }
                 {QUOTE}                   { [:STRING,       consume_string(text)] }
+                {HEREDOCUMENT}            { [:STRING,       consume_heredoc] }
 #-------------------------------------------------------------------------------
                 {LEFTBRACE}               { [:LEFTBRACE,    text]}
                 {RIGHTBRACE}              { [:RIGHTBRACE,   text]}
@@ -105,5 +107,10 @@ inner
     result.chop
   end
 
+  def consume_heredoc
+      token = Regexp.new @ss.scan_until(%r{\n})
+      document = @ss.scan_until(token)
 
+      document.chop
+  end
 end
