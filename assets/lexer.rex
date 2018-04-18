@@ -95,7 +95,7 @@ inner
       when %r{\$\{\z}
         nested += 1
       when %r{\}\z}
-        nested -= 1
+        nested -= 1 if nested > 0
       when %r{\\\z}
         result += text.chop + @ss.getch
         next

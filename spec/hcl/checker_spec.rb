@@ -13,7 +13,7 @@ RSpec.describe HCL::Checker do
                  'cidr_block = "10.0.0.0/16"' \
                  'enable_dns_hostnames = true' \
                  'tags {' \
-                 'Name = "Event Store VPC"' \
+                 'Name = "Event {Store} VPC"' \
                  '}' \
                  '}'
     expect(HCL::Checker.valid? hcl_string).to eq(true)
