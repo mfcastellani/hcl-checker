@@ -3,6 +3,21 @@ RSpec.describe HCL::Checker do
     expect(HCL::Checker::VERSION).not_to be nil
   end
 
+  it 'parses floats' do
+    hcl_string = 'provider "foo" {' \
+                 'foo = 0.1' \
+                 'bar = 1' \
+                 '}'
+    expect(HCL::Checker.parse hcl_string).to eq({
+      "provider" => {
+        "foo" => {
+          "foo" => 0.1,
+          "bar" => 1,
+        }
+      }
+    })
+  end
+
   it 'try to validate a valid HCL' do
     hcl_string = 'provider "aws" {' \
                  'region = "${var.aws_region}"' \

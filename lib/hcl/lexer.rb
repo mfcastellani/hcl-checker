@@ -72,11 +72,11 @@ class HCLLexer
       when (text = @ss.scan(/true|false/))
          action { [:BOOL,         to_boolean(text)]}
 
-      when (text = @ss.scan(/-?\d+/))
-         action { [:NUMBER,       text.to_i] }
-
       when (text = @ss.scan(/\-?\d+\.\d+/))
          action { [:FLOAT,        text.to_f] }
+
+      when (text = @ss.scan(/-?\d+/))
+         action { [:NUMBER,       text.to_i] }
 
       when (text = @ss.scan(/\"/))
          action { [:STRING,       consume_string(text)] }
