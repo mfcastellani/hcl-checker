@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    hcl-checker (1.0.5)
+    hcl-checker (1.0.6)
 
 GEM
   remote: https://rubygems.org/
