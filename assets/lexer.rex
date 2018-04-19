@@ -31,8 +31,8 @@ rule
 #-------------------------------------------------------------------------------
                 {MCOMMENTIN}              { consume_comment(text) }
                 {BOOL}                    { [:BOOL,         to_boolean(text)]}
-                {NUMBER}                  { [:NUMBER,       text.to_i] }
                 {FLOAT}                   { [:FLOAT,        text.to_f] }
+                {NUMBER}                  { [:NUMBER,       text.to_i] }
                 {QUOTE}                   { [:STRING,       consume_string(text)] }
                 {HEREDOCUMENT}            { [:STRING,       consume_heredoc] }
 #-------------------------------------------------------------------------------
@@ -95,7 +95,7 @@ inner
       when %r{\$\{\z}
         nested += 1
       when %r{\}\z}
-        nested -= 1
+        nested -= 1 if nested > 0
       when %r{\\\z}
         result += text.chop + @ss.getch
         next

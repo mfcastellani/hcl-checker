@@ -70,19 +70,19 @@ module_eval(<<'...end parse.y/module_eval...', 'parse.y', 115)
 
 racc_action_table = [
     20,    26,    25,    36,    26,    25,     5,    21,     6,    13,
-    33,    24,    35,    26,    25,    30,     5,    10,     6,    33,
-     5,    28,     6,    -8,    16,    34,    17,     5,    13,     6,
-    -9,    12,    18 ]
+    33,    24,    35,    26,    25,    30,     5,    18,     6,    33,
+     5,    28,     6,    12,    16,    34,    17,     5,    13,     6,
+    -9,    -8,    10 ]
 
 racc_action_check = [
     12,    12,    12,    29,    24,    24,     0,    12,     0,    12,
-    24,    12,    29,    36,    36,    24,    13,     1,    13,    36,
-    27,    13,    27,     5,     9,    27,     9,     3,     9,     3,
-     6,     7,    10 ]
+    24,    12,    29,    36,    36,    24,    13,    10,    13,    36,
+    27,    13,    27,     7,     9,    27,     9,     3,     9,     3,
+     6,     5,     1 ]
 
 racc_action_pointer = [
-    -1,    17,   nil,    20,   nil,    15,    22,    23,   nil,    17,
-    32,   nil,    -2,     9,   nil,   nil,   nil,   nil,   nil,   nil,
+    -1,    32,   nil,    20,   nil,    23,    22,    15,   nil,    17,
+    17,   nil,    -2,     9,   nil,   nil,   nil,   nil,   nil,   nil,
    nil,   nil,   nil,   nil,     1,   nil,   nil,    13,   nil,    -2,
    nil,   nil,   nil,   nil,   nil,   nil,    10,   nil ]
 
@@ -93,18 +93,18 @@ racc_action_default = [
    -21,   -22,   -25,   -26,    -6,   -20,   -24,   -23 ]
 
 racc_goto_table = [
-    11,     3,    14,    31,     1,    22,     2,    19,    23,    15,
-    29,   nil,   nil,   nil,    27,    37,   nil,   nil,   nil,   nil,
+    11,     3,    14,    31,    15,    22,    29,    19,     2,     1,
+    23,   nil,   nil,   nil,    27,    37,   nil,   nil,   nil,   nil,
    nil,   nil,   nil,   nil,    11 ]
 
 racc_goto_check = [
-     4,     3,     5,    12,     1,     5,     2,     7,     8,     9,
-    11,   nil,   nil,   nil,     3,    12,   nil,   nil,   nil,   nil,
+     4,     3,     5,    12,     9,     5,    11,     7,     2,     1,
+     8,   nil,   nil,   nil,     3,    12,   nil,   nil,   nil,   nil,
    nil,   nil,   nil,   nil,     4 ]
 
 racc_goto_pointer = [
-   nil,     4,     6,     1,    -3,    -7,   nil,    -5,    -4,     0,
-   nil,   -14,   -21 ]
+   nil,     9,     8,     1,    -3,    -7,   nil,    -5,    -2,    -5,
+   nil,   -18,   -21 ]
 
 racc_goto_default = [
    nil,   nil,   nil,   nil,     4,   nil,     7,    32,   nil,     8,
