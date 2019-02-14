@@ -10,7 +10,7 @@ require_relative './lexer'
 
 class HCLParser < Racc::Parser
 
-module_eval(<<'...end parse.y/module_eval...', 'parse.y', 115)
+module_eval(<<'...end parse.y/module_eval...', 'parse.y', 119)
   #//
   #//       HCL is unclear on what one should do when duplicate
   #//       keys are encountered.
@@ -69,45 +69,45 @@ module_eval(<<'...end parse.y/module_eval...', 'parse.y', 115)
 ##### State transition tables begin ###
 
 racc_action_table = [
-    20,    26,    25,    36,    26,    25,     5,    21,     6,    13,
-    33,    24,    35,    26,    25,    30,     5,    18,     6,    33,
-     5,    28,     6,    12,    16,    34,    17,     5,    13,     6,
-    -9,    -8,    10 ]
+    20,    26,    25,    18,    26,    25,     5,    21,     6,    13,
+    33,    24,    13,    12,    24,    30,    26,    25,    38,     5,
+    -9,     6,    33,     5,    13,     6,    24,    37,    28,     5,
+    -8,     6,    10,    16,    36,    17,   nil,    13 ]
 
 racc_action_check = [
-    12,    12,    12,    29,    24,    24,     0,    12,     0,    12,
-    24,    12,    29,    36,    36,    24,    13,    10,    13,    36,
-    27,    13,    27,     7,     9,    27,     9,     3,     9,     3,
-     6,     5,     1 ]
+    12,    12,    12,    10,    24,    24,     0,    12,     0,    12,
+    24,    12,    24,     7,    24,    24,    38,    38,    29,     3,
+     6,     3,    38,    13,    38,    13,    38,    29,    13,    27,
+     5,    27,     1,     9,    27,     9,   nil,     9 ]
 
 racc_action_pointer = [
-    -1,    32,   nil,    20,   nil,    23,    22,    15,   nil,    17,
-    17,   nil,    -2,     9,   nil,   nil,   nil,   nil,   nil,   nil,
-   nil,   nil,   nil,   nil,     1,   nil,   nil,    13,   nil,    -2,
-   nil,   nil,   nil,   nil,   nil,   nil,    10,   nil ]
+    -1,    32,   nil,    12,   nil,    22,    12,     5,   nil,    26,
+     3,   nil,    -2,    16,   nil,   nil,   nil,   nil,   nil,   nil,
+   nil,   nil,   nil,   nil,     1,   nil,   nil,    22,   nil,    13,
+   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,    13,   nil ]
 
 racc_action_default = [
-    -2,   -29,    -1,    -3,    -4,   -18,   -19,   -29,   -15,   -29,
-   -29,    -5,   -29,   -29,   -16,   -17,   -18,   -19,    38,   -10,
-   -11,   -12,   -13,   -14,   -29,   -27,   -28,   -29,    -7,   -29,
-   -21,   -22,   -25,   -26,    -6,   -20,   -24,   -23 ]
+    -2,   -31,    -1,    -3,    -4,   -18,   -19,   -31,   -15,   -31,
+   -31,    -5,   -31,   -31,   -16,   -17,   -18,   -19,    40,   -10,
+   -11,   -12,   -13,   -14,   -31,   -29,   -30,   -31,    -7,   -31,
+   -21,   -22,   -25,   -26,   -27,   -28,    -6,   -20,   -24,   -23 ]
 
 racc_goto_table = [
-    11,     3,    14,    31,    15,    22,    29,    19,     2,     1,
-    23,   nil,   nil,   nil,    27,    37,   nil,   nil,   nil,   nil,
+    11,    31,    14,     3,    15,    22,    29,    19,     2,     1,
+    23,   nil,   nil,   nil,   nil,    39,    27,   nil,   nil,   nil,
    nil,   nil,   nil,   nil,    11 ]
 
 racc_goto_check = [
-     4,     3,     5,    12,     9,     5,    11,     7,     2,     1,
-     8,   nil,   nil,   nil,     3,    12,   nil,   nil,   nil,   nil,
+     4,    12,     5,     3,     9,     5,    11,     7,     2,     1,
+     8,   nil,   nil,   nil,   nil,    12,     3,   nil,   nil,   nil,
    nil,   nil,   nil,   nil,     4 ]
 
 racc_goto_pointer = [
-   nil,     9,     8,     1,    -3,    -7,   nil,    -5,    -2,    -5,
-   nil,   -18,   -21 ]
+   nil,     9,     8,     3,    -3,    -7,   nil,    -5,    -2,    -5,
+   nil,   -18,   -23 ]
 
 racc_goto_default = [
-   nil,   nil,   nil,   nil,     4,   nil,     7,    32,   nil,     8,
+   nil,   nil,   nil,   nil,     4,    35,     7,    32,    34,     8,
      9,   nil,   nil ]
 
 racc_reduce_table = [
@@ -138,12 +138,14 @@ racc_reduce_table = [
   2, 29, :_reduce_24,
   1, 30, :_reduce_25,
   1, 30, :_reduce_26,
-  1, 25, :_reduce_27,
-  1, 25, :_reduce_28 ]
+  1, 30, :_reduce_27,
+  1, 30, :_reduce_28,
+  1, 25, :_reduce_29,
+  1, 25, :_reduce_30 ]
 
-racc_reduce_n = 29
+racc_reduce_n = 31
 
-racc_shift_n = 38
+racc_shift_n = 40
 
 racc_token_table = {
   false => 0,
@@ -401,15 +403,29 @@ module_eval(<<'.,.,', 'parse.y', 97)
   end
 .,.,
 
-module_eval(<<'.,.,', 'parse.y', 102)
+module_eval(<<'.,.,', 'parse.y', 99)
   def _reduce_27(val, _values, result)
      result = val[0] 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parse.y', 104)
+module_eval(<<'.,.,', 'parse.y', 101)
   def _reduce_28(val, _values, result)
+     result = val[0] 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'parse.y', 106)
+  def _reduce_29(val, _values, result)
+     result = val[0] 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'parse.y', 108)
+  def _reduce_30(val, _values, result)
      result = val[0] 
     result
   end

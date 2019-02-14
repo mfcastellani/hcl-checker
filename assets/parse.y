@@ -96,6 +96,10 @@ rule
        { result = val[0] }
   |  STRING
        { result = val[0] }
+  | list
+       { result = val[0] }
+  | object
+       { result = val[0] }
   ;
 
   number:
