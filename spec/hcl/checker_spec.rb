@@ -135,7 +135,7 @@ RSpec.describe HCL::Checker do
         }})
     end
 
-    it 'accecpts a list with array elements' do
+    it 'accepts a list with array elements' do
       hcl_string = %{
         module "foo" {
           bar = [ [ 1, 2, 3 ] ]

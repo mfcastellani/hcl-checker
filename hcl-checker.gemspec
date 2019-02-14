@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name          = 'hcl-checker'
   spec.version       = HCL::Checker::VERSION
   spec.authors       = ['Marcelo Castellani']
-  spec.email         = ['marcelo.castellani@totvs.com.br']
+  spec.email         = ['marcelofc.rock@gmail.com']
 
   spec.summary       = 'Hashicorp Configuration Language parser for Ruby'
   spec.description   = 'Hashicorp Configuration Language parser and checker for Ruby'
