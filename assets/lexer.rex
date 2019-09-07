@@ -20,7 +20,7 @@ macro
   RIGHTBRACE            \}
   LEFTBRACKET           \[
   RIGHTBRACKET          \]
-  HEREDOCUMENT          \<<-
+  HEREDOCUMENT          \<<\-?
 
 rule
 # [:state]      pattern                   [actions]

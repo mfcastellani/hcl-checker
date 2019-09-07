@@ -108,6 +108,33 @@ RSpec.describe HCL::Checker do
     it { expect(HCL::Checker.valid? hcl_string).to eq(true) }
   end
 
+  context 'valid HCL with here document without hyphen' do
+    hcl_string = %(
+resource "aws_iam_policy" "policy" {
+  name        = "test_policy"
+  path        = "/"
+  description = "My test policy"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "ec2:Describe*"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+    )
+
+    it { expect(HCL::Checker.valid? hcl_string).to eq(true) }
+  end
+
   context 'list of complex objects ' do
 
     it 'accepts a list with object elements' do
@@ -146,4 +173,28 @@ RSpec.describe HCL::Checker do
       expect(ret).to eq({"module"=>{"foo"=>{"bar"=>[[1, 2, 3]]}}})
     end
   end
+
+  context 'with empty file' do
+    hcl_string = ''
+    it("should parse") { expect(HCL::Checker.valid? hcl_string).to eq(true) }
+  end
+
+  context 'with spurious commas' do
+    hcl_string = <<EOF
+resource "aws_security_group" "allow_tls" {
+  name        = "allow_tls"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = "${aws_vpc.main.id}",
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "-1"
+    cidr_blocks = ["192.168.0.1"],
+  },
+}
+EOF
+    it("should parse") { expect(HCL::Checker.valid? hcl_string).to eq(true) }
+  end
+
 end

@@ -81,7 +81,7 @@ class HCLLexer
       when (text = @ss.scan(/\"/))
          action { [:STRING,       consume_string(text)] }
 
-      when (text = @ss.scan(/\<<-/))
+      when (text = @ss.scan(/\<<\-?/))
          action { [:STRING,       consume_heredoc] }
 
       when (text = @ss.scan(/\{/))
