@@ -1,22 +1,22 @@
 PATH
   remote: .
   specs:
-    hcl-checker (1.1.1)
+    hcl-checker (1.2.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.3)
-    filesize (0.1.1)
+    filesize (0.2.0)
     jsobfu (0.4.2)
       rkelly-remix
-    json (2.0.4)
-    metasm (1.0.3)
+    json (2.2.0)
+    metasm (1.0.4)
     mini_portile2 (2.4.0)
-    nokogiri (1.10.1)
+    nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     racc (1.4.14)
-    rake (10.4.2)
+    rake (10.5.0)
     rb-readline (0.5.5)
     rex (2.0.12)
       filesize (~> 0)
@@ -25,34 +25,34 @@ GEM
       metasm (~> 1)
       nokogiri (~> 1)
       rb-readline (~> 0)
-    rexical (1.0.5)
+    rexical (1.0.7)
     rkelly-remix (0.0.7)
-    rspec (3.7.0)
-      rspec-core (~> 3.7.0)
-      rspec-expectations (~> 3.7.0)
-      rspec-mocks (~> 3.7.0)
-    rspec-core (3.7.1)
-      rspec-support (~> 3.7.0)
-    rspec-expectations (3.7.0)
+    rspec (3.8.0)
+      rspec-core (~> 3.8.0)
+      rspec-expectations (~> 3.8.0)
+      rspec-mocks (~> 3.8.0)
+    rspec-core (3.8.2)
+      rspec-support (~> 3.8.0)
+    rspec-expectations (3.8.4)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.7.0)
-    rspec-mocks (3.7.0)
+      rspec-support (~> 3.8.0)
+    rspec-mocks (3.8.1)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.7.0)
-    rspec-support (3.7.0)
+      rspec-support (~> 3.8.0)
+    rspec-support (3.8.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.16)
+  bundler (~> 2.0.2)
   hcl-checker!
-  nokogiri (>= 1.8.5)
+  nokogiri (>= 1.10.4)
   racc (= 1.4.14)
   rake (~> 10.0)
   rex (= 2.0.12)
-  rexical (= 1.0.5)
+  rexical (>= 1.0.7)
   rspec (~> 3.0)
 
 BUNDLED WITH
-   1.16.2
+   2.0.2

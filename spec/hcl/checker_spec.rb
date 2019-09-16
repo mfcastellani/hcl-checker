@@ -86,50 +86,50 @@ RSpec.describe HCL::Checker do
 
   context 'valid HCL with here document' do
     hcl_string = %(
-                    custom_data = <<-EOF
-                      #!/bin/bash
-                      export CLOUD_ID=${var.org_id}
-                      export TOPOLOGY_ID=${var.topology_id}
-                    EOF
-                    provider "aws" {
-                      region = "${var.aws_region}"
-                      access_key = "${var.aws_access_key}"
-                      secret_key = "${var.aws_secret_key}"
-                    }
-                    resource "aws_vpc" "default" {
-                      cidr_block = "10.0.0.0/16"
-                      enable_dns_hostnames = true
-                      tags {
-                        Name = "Event Store VPC"
-                      }
-                    }
-                  )
+      custom_data = <<-EOF
+        #!/bin/bash
+        export CLOUD_ID=${var.org_id}
+        export TOPOLOGY_ID=${var.topology_id}
+      EOF
+      provider "aws" {
+        region = "${var.aws_region}"
+        access_key = "${var.aws_access_key}"
+        secret_key = "${var.aws_secret_key}"
+      }
+      resource "aws_vpc" "default" {
+        cidr_block = "10.0.0.0/16"
+        enable_dns_hostnames = true
+        tags {
+          Name = "Event Store VPC"
+        }
+      }
+    )
 
     it { expect(HCL::Checker.valid? hcl_string).to eq(true) }
   end
 
   context 'valid HCL with here document without hyphen' do
     hcl_string = %(
-resource "aws_iam_policy" "policy" {
-  name        = "test_policy"
-  path        = "/"
-  description = "My test policy"
+      resource "aws_iam_policy" "policy" {
+        name        = "test_policy"
+        path        = "/"
+        description = "My test policy"
 
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "ec2:Describe*"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
-}
+        policy = <<EOF
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Action": [
+              "ec2:Describe*"
+            ],
+            "Effect": "Allow",
+            "Resource": "*"
+          }
+        ]
+      }
+      EOF
+      }
     )
 
     it { expect(HCL::Checker.valid? hcl_string).to eq(true) }
@@ -180,20 +180,20 @@ EOF
   end
 
   context 'with spurious commas' do
-    hcl_string = <<EOF
-resource "aws_security_group" "allow_tls" {
-  name        = "allow_tls"
-  description = "Allow TLS inbound traffic"
-  vpc_id      = "${aws_vpc.main.id}",
+    hcl_string = %(
+      resource "aws_security_group" "allow_tls" {
+        name        = "allow_tls"
+        description = "Allow TLS inbound traffic"
+        vpc_id      = "${aws_vpc.main.id}",
 
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "-1"
-    cidr_blocks = ["192.168.0.1"],
-  },
-}
-EOF
+        ingress {
+          from_port   = 443
+          to_port     = 443
+          protocol    = "-1"
+          cidr_blocks = ["192.168.0.1"],
+        },
+      }
+    )
     it("should parse") { expect(HCL::Checker.valid? hcl_string).to eq(true) }
   end
 
