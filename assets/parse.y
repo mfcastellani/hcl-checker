@@ -26,8 +26,12 @@ rule
 
 
   objectlist:
-     objectitem
+     objectitem COMMA
        { result = [val[0]] }
+  |  objectitem
+       { result = [val[0]] }
+  |  objectlist objectitem COMMA
+       { result = val[0] << val[1]  }
   |  objectlist objectitem
        { result = val[0] << val[1]  }
   ;
@@ -126,7 +130,7 @@ require_relative './lexer'
   #//       from object.go:  there is a flattened list structure
   #//
   def flatten_objectlist(list)
-    list.each_with_object({}) do |a, h|
+    (list || {}).each_with_object({}) do |a, h|
       h[a.first] =
         case a.last
         when Hash
