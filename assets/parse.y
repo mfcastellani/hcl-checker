@@ -41,7 +41,7 @@ rule
      LEFTBRACE objectlist RIGHTBRACE
        { result = flatten_objectlist(val[1]) }
   |  LEFTBRACE RIGHTBRACE
-       { return }
+       { return {} }
   ;
 
   objectkey:
@@ -88,7 +88,7 @@ rule
      LEFTBRACKET listitems RIGHTBRACKET
        { result = val[1] }
   |  LEFTBRACKET RIGHTBRACKET
-       { return }
+       { return [] }
   ;
 
   listitems:
