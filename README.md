@@ -1,10 +1,10 @@
 # Hcl::Checker
 
-**Hashicorp Configuration Language** syntax checker and parser. 
+**Hashicorp Configuration Language** syntax checker and parser.
 
 Parser originally created by [Sikula](https://github.com/sikula) and available
 at [Ruby HCL Repository](https://github.com/sikula/ruby-hcl). Only works with
-[HCL Version 1](https://github.com/hashicorp/hcl). 
+[HCL Version 1](https://github.com/hashicorp/hcl).
 
 ## Installation
 
@@ -47,21 +47,21 @@ You can validate the `hcl_string` contents with `valid?` method. This will
 return `true` if is a valid HCL or `false` if not.
 
 ```
-2.3.2 :014 > HCL::Checker.valid? hcl_string
+2.3.2 :014 > HCL1::Checker.valid? hcl_string
  => true
 ```
 
 You can parse the `hcl_string` into a `Hash` with `parse` method.
 
 ```
-2.3.2 :015 > HCL::Checker.parse(hcl_string)
+2.3.2 :015 > HCL1::Checker.parse(hcl_string)
  => {"provider"=>{"aws"=>{"region"=>"${var.aws_region}", "access_key"=>"${var.aws_access_key}", "secret_key"=>"${var.aws_secret_key}"}}, "resource"=>{"aws_vpc"=>{"default"=>{"cidr_block"=>"10.0.0.0/16", "enable_dns_hostnames"=>true, "tags"=>{"Name"=>"Event Store VPC"}}}}}
 ```
 
 If after a `parse` you got `false` you can check `last_error` with:
 
 ```
-2.4.2 :063 > HCL::Checker.last_error
+2.4.2 :063 > HCL1::Checker.last_error
  => "Parse error at  \"eec8b16c-ee89-4ea0-bdcc-d094300a42e8\" , (invalid token: ,)"
 ```
 
@@ -84,7 +84,7 @@ $ bundle exec rake build_grammar
 Building Lexer....done
 Building Parser....done
 ```
-  
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at
@@ -96,5 +96,3 @@ to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 The gem is available as open source under the terms of the [MIT
 License](https://opensource.org/licenses/MIT).
-
-

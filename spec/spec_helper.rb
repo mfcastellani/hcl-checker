@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "hcl/checker"
+require "hcl1/checker"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
