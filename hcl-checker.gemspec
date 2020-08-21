@@ -17,6 +17,7 @@ Gem::Specification.new do |spec|
     f.match(%r{^(test|spec|features)/})
   end
   spec.require_paths = ['lib']
+  spec.required_ruby_version = '>= 2.4.1'
 
   spec.add_development_dependency 'bundler', '~> 2.1.4'
   spec.add_development_dependency 'rake', '~> 12.3.3'
@@ -24,28 +25,13 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'racc', '1.5.0'
   spec.add_development_dependency 'rex', '2.0.12'
   spec.add_development_dependency 'rexical', '>= 1.0.7'
+  spec.add_development_dependency 'byebug', '11.1.3'
 
   spec.post_install_message = %q{
-Hello, I am updating this Gem to support version 2.0 of the HCL.
-
-In the meantime, it is important that you know that there will be a
-compatibility break with the current version, for Gem to support both
-versions.
-
-Therefore, instead of using just HCL::Checker you must tell which
-version you are using, like this:
-
-HCL1::Checker
-
-Or
-
-HCL2::Checker
-
-At the moment both HCL::Checker and HCL1::Checker will work, but with
-the release of support for version 2 the HCL::Checker syntax will no
-longer work.
-
-So, update your code.
+Hello, me again. After several contacts of users of this gem requesting that
+the module name be kept only as HCL, instead of HCL1 and HCL2, I went back and
+kept it. Sorry for those who eventually switched from HCL to HCL1. And thanks to
+everyone who got in touch justifying why my change would be bad for all users.
 
 Thank you :)
 }

@@ -16,4 +16,3 @@ task :build_grammar do
   `racc ./assets/parse.y -o ./lib/hcl/parser.rb`
   print "....done\n\n"
 end
-

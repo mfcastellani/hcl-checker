@@ -85,16 +85,22 @@ class HCLLexer
                      action { [:STRING,       consume_heredoc] }
 
                   when (text = @ss.scan(/\{/))
-                     action { [:LEFTBRACE,    text]}
+                     action { [:LEFTBRACE,        text]}
 
                   when (text = @ss.scan(/\}/))
-                     action { [:RIGHTBRACE,   text]}
+                     action { [:RIGHTBRACE,       text]}
 
                   when (text = @ss.scan(/\[/))
-                     action { [:LEFTBRACKET,  text]}
+                     action { [:LEFTBRACKET,      text]}
 
                   when (text = @ss.scan(/\]/))
-                     action { [:RIGHTBRACKET, text]}
+                     action { [:RIGHTBRACKET,     text]}
+
+                  when (text = @ss.scan(/\(/))
+                     action { [:LEFTPARENTHESES,  text]}
+
+                  when (text = @ss.scan(/\)/))
+                     action { [:RIGHTPARENTHESES, text]}
 
                   when (text = @ss.scan(/\,/))
                      action { [:COMMA,        text]}

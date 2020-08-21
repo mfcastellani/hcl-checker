@@ -12,6 +12,8 @@ token BOOL
       RIGHTBRACE
       LEFTBRACKET
       RIGHTBRACKET
+      LEFTPARENTHESES
+      RIGHTPARENTHESES
       PERIOD
       EPLUS
       EMINUS
@@ -23,7 +25,6 @@ rule
       { result = val[0] }
   |  objectlist
   ;
-
 
   objectlist:
      objectitem COMMA
@@ -60,6 +61,10 @@ rule
   |  objectkey EQUAL object
        { result = val[0], val[2] }
   |  objectkey EQUAL list
+       { result = val[0], val[2] }
+  |  objectkey EQUAL IDENTIFIER LEFTPARENTHESES IDENTIFIER RIGHTPARENTHESES
+       { result = val[0], "#{val[2]}(#{val[4]})" }
+  |  objectkey EQUAL IDENTIFIER
        { result = val[0], val[2] }
   |  block
        { result = val[0] }

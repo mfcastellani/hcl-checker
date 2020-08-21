@@ -2,7 +2,7 @@
 class HCLLexer
 option
   independent
-  
+
 macro
   NEWLINE               \n|\r
   BLANK                 \s+
@@ -20,6 +20,8 @@ macro
   RIGHTBRACE            \}
   LEFTBRACKET           \[
   RIGHTBRACKET          \]
+  LEFTPARENTHESES       \(
+  RIGHTPARENTHESES      \)
   HEREDOCUMENT          \<<\-?
 
 rule
@@ -36,16 +38,17 @@ rule
                 {QUOTE}                   { [:STRING,       consume_string(text)] }
                 {HEREDOCUMENT}            { [:STRING,       consume_heredoc] }
 #-------------------------------------------------------------------------------
-                {LEFTBRACE}               { [:LEFTBRACE,    text]}
-                {RIGHTBRACE}              { [:RIGHTBRACE,   text]}
-                {LEFTBRACKET}             { [:LEFTBRACKET,  text]}
-                {RIGHTBRACKET}            { [:RIGHTBRACKET, text]}
+                {LEFTBRACE}               { [:LEFTBRACE,        text]}
+                {RIGHTBRACE}              { [:RIGHTBRACE,       text]}
+                {LEFTBRACKET}             { [:LEFTBRACKET,      text]}
+                {RIGHTBRACKET}            { [:RIGHTBRACKET,     text]}
+                {LEFTPARENTHESES}         { [:LEFTPARENTHESES,  text]}
+                {RIGHTPARENTHESES}        { [:RIGHTPARENTHESES, text]}
 #-------------------------------------------------------------------------------
                 {COMMA}                   { [:COMMA,        text]}
                 {IDENTIFIER}              { [:IDENTIFIER,   text]}
                 {EQUAL}                   { [:EQUAL,        text]}
                 {MINUS}                   { [:MINUS,        text]}
-
 
 inner
 
