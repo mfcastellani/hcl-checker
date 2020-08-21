@@ -47,21 +47,21 @@ You can validate the `hcl_string` contents with `valid?` method. This will
 return `true` if is a valid HCL or `false` if not.
 
 ```
-2.3.2 :014 > HCL1::Checker.valid? hcl_string
+2.3.2 :014 > HCL::Checker.valid? hcl_string
  => true
 ```
 
 You can parse the `hcl_string` into a `Hash` with `parse` method.
 
 ```
-2.3.2 :015 > HCL1::Checker.parse(hcl_string)
+2.3.2 :015 > HCL::Checker.parse(hcl_string)
  => {"provider"=>{"aws"=>{"region"=>"${var.aws_region}", "access_key"=>"${var.aws_access_key}", "secret_key"=>"${var.aws_secret_key}"}}, "resource"=>{"aws_vpc"=>{"default"=>{"cidr_block"=>"10.0.0.0/16", "enable_dns_hostnames"=>true, "tags"=>{"Name"=>"Event Store VPC"}}}}}
 ```
 
 If after a `parse` you got `false` you can check `last_error` with:
 
 ```
-2.4.2 :063 > HCL1::Checker.last_error
+2.4.2 :063 > HCL::Checker.last_error
  => "Parse error at  \"eec8b16c-ee89-4ea0-bdcc-d094300a42e8\" , (invalid token: ,)"
 ```
 

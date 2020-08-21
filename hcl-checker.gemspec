@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
     f.match(%r{^(test|spec|features)/})
   end
   spec.require_paths = ['lib']
-  spec.required_ruby_version = '>= 2.4.1'
+  spec.required_ruby_version = '>= 2.5.0'
 
   spec.add_development_dependency 'bundler', '~> 2.1.4'
   spec.add_development_dependency 'rake', '~> 12.3.3'
@@ -25,7 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'racc', '1.5.0'
   spec.add_development_dependency 'rex', '2.0.12'
   spec.add_development_dependency 'rexical', '>= 1.0.7'
-  spec.add_development_dependency 'byebug', '11.1.3'
 
   spec.post_install_message = %q{
 Hello, me again. After several contacts of users of this gem requesting that
