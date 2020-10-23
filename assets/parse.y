@@ -62,12 +62,23 @@ rule
        { result = val[0], val[2] }
   |  objectkey EQUAL list
        { result = val[0], val[2] }
-  |  objectkey EQUAL IDENTIFIER LEFTPARENTHESES IDENTIFIER RIGHTPARENTHESES
+  |  objectkey EQUAL IDENTIFIER LEFTPARENTHESES cawabanga RIGHTPARENTHESES
        { result = val[0], "#{val[2]}(#{val[4]})" }
   |  objectkey EQUAL IDENTIFIER
        { result = val[0], val[2] }
   |  block
        { result = val[0] }
+  ;
+
+  cawabanga:
+     IDENTIFIER
+       { result = val[0] }
+  |  object
+       { result = val[0] }
+  |  list
+       { result = val[0] }
+  |  IDENTIFIER LEFTPARENTHESES cawabanga RIGHTPARENTHESES
+       { result = val[0], "#{val[2]}(#{val[4]})" }
   ;
 
   block:
@@ -104,6 +115,8 @@ rule
      number
        { result = val[0] }
   |  STRING
+       { result = val[0] }
+  |  IDENTIFIER
        { result = val[0] }
   | list
        { result = val[0] }

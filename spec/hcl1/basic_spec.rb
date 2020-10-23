@@ -14,6 +14,21 @@ RSpec.describe HCL::Checker do
     })
   end
 
+  it 'parses rich value types' do
+    hcl_string = %(variable "foo" {
+      type = map(object({
+        a_string     = string,
+        a_number     = number,
+        a_bool       = bool,
+        a_list       = list(string),
+        a_set        = set(number),
+        a_map        = map(number),
+        a_tuple      = tuple([string, number, bool])
+        a_any        = any
+      }))
+    })
+  end
+
   it 'try to validate a valid HCL' do
     hcl_string = 'provider "aws" {' \
                  'region = "${var.aws_region}"' \
