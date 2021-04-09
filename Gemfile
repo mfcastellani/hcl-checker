@@ -1,4 +1,4 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 # This is needed due https://nvd.nist.gov/vuln/detail/CVE-2018-14404
 # A NULL pointer dereference vulnerability exists in the xpath.c:xmlXPathCompOpEval()
@@ -7,10 +7,9 @@ source "https://rubygems.org"
 # with the use of the libxml2 library may be vulnerable to a denial of service attack due
 # to a crash of the application.
 # Nokogiri >= 1.8.5 solves this problem
-gem "nokogiri", ">= 1.10.8"
+gem 'nokogiri', '>= 1.10.8'
 
-
-git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 # Specify your gem's dependencies in hcl-checker.gemspec
 gemspec

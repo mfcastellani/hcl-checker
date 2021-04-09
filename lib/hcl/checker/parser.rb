@@ -20,6 +20,10 @@ module_eval(<<'...end parse.y/module_eval...', 'parse.y', 128)
   #//
   #//       from object.go:  there is a flattened list structure
   #//
+  #//       if @duplicate_mode is set:
+  #//         - :array then duplicates will be appended to an array
+  #//         - :merge then duplicates will be deep merged into a hash
+  #//
   def flatten_objectlist(list)
     (list || {}).each_with_object({}) do |a, h|
       if h.keys.include?(a.first)

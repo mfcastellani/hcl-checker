@@ -20,7 +20,7 @@ RSpec.describe HCL::Checker do
       }
     )
 
-    it { expect(HCL::Checker.valid? hcl_string).to eq(true) }
+    it { expect(HCL::Checker.valid?(hcl_string)).to eq(true) }
   end
 
   context 'valid HCL with here document without hyphen' do
@@ -47,6 +47,6 @@ RSpec.describe HCL::Checker do
       }
     )
 
-    it { expect(HCL::Checker.valid? hcl_string).to eq(true) }
+    it { expect(HCL::Checker.valid?(hcl_string)).to eq(true) }
   end
 end
