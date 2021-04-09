@@ -10,9 +10,9 @@ end
 desc "Generate Grammar files for HCL"
 task :build_grammar do
   print 'Building Lexer'
-  `rex  ./assets/lexer.rex -o ./lib/hcl/lexer.rb`
+  `rex ./assets/lexer.rex -o ./lib/hcl/checker/lexer.rb`
   print "....done\n"
   print 'Building Parser'
-  `racc ./assets/parse.y -o ./lib/hcl/parser.rb`
+  `racc ./assets/parse.y -o ./lib/hcl/checker/parser.rb`
   print "....done\n\n"
 end

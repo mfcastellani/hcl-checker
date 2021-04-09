@@ -130,19 +130,31 @@ require_relative './lexer'
   #//       keys are encountered.
   #//
   #//       from decoder.go: if we're at the root or we're directly within
-  #//                        a list, decode  to hashes, otherwise lists
+  #//                        a list, decode to hashes, otherwise lists
   #//
   #//       from object.go:  there is a flattened list structure
   #//
+  #//       if @duplicate_mode is set:
+  #//         - :array then duplicates will be appended to an array
+  #//         - :merge then duplicates will be deep merged into a hash
+  #//
   def flatten_objectlist(list)
     (list || {}).each_with_object({}) do |a, h|
-      h[a.first] =
-        case a.last
-        when Hash
+      if h.keys.include?(a.first)
+        case @duplicate_mode
+        when :array
+          if h[a.first].is_a?(Array)
+            h[a.first].push(a.last)
+          else
+            h[a.first] = [ h[a.first], a.last ]
+          end
+        when :merge
           deep_merge(h[a.first] || {}, a.last)
-        else
-          h[a.first] = a.last
+        else raise ArgumentError
         end
+      else
+        h[a.first] = a.last
+      end
     end
   end
 
@@ -154,7 +166,8 @@ require_relative './lexer'
   end
 
 
-  def parse(input)
+  def parse(input, duplicate_mode = :array)
+  @duplicate_mode = duplicate_mode
     @lexer = HCLLexer.new.lex(input)
     do_parse
     return @result
