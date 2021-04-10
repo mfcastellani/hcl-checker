@@ -1,5 +1,4 @@
-
-class HCLLexer
+class HCL::Checker::Lexer
 option
   independent
 
@@ -51,13 +50,13 @@ rule
                 {MINUS}                   { [:MINUS,        text]}
 
 inner
-
   def lex(input)
     scan_setup(input)
     tokens = []
     while token = next_token
       tokens << token
     end
+
     tokens
   end
 

@@ -4,8 +4,7 @@
 # from lexical definition file "./assets/lexer.rex".
 #++
 
-
-class HCLLexer
+class HCL::Checker::Lexer
       require 'strscan'
 
       class ScanError < StandardError ; end

@@ -1,4 +1,4 @@
-class HCLParser
+class HCL::Checker::Parser
 token BOOL
       FLOAT
       NUMBER
@@ -122,7 +122,7 @@ rule
 end
 
 ---- header
-require_relative './lexer'
+require_relative 'lexer'
 
 ---- inner
   #//
@@ -167,10 +167,11 @@ require_relative './lexer'
 
 
   def parse(input, duplicate_mode = :array)
-  @duplicate_mode = duplicate_mode
-    @lexer = HCLLexer.new.lex(input)
+    @duplicate_mode = duplicate_mode
+    @lexer = HCL::Checker::Lexer.new.lex(input)
     do_parse
-    return @result
+
+    @result
   end
 
 

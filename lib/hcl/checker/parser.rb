@@ -6,9 +6,11 @@
 
 require 'racc/parser.rb'
 
-require_relative './lexer'
+require_relative 'lexer'
 
-class HCLParser < Racc::Parser
+module HCL
+  module Checker
+    class Parser < Racc::Parser
 
 module_eval(<<'...end parse.y/module_eval...', 'parse.y', 128)
   #//
@@ -53,10 +55,11 @@ module_eval(<<'...end parse.y/module_eval...', 'parse.y', 128)
 
 
   def parse(input, duplicate_mode = :array)
-  @duplicate_mode = duplicate_mode
-    @lexer = HCLLexer.new.lex(input)
+    @duplicate_mode = duplicate_mode
+    @lexer = HCL::Checker::Lexer.new.lex(input)
     do_parse
-    return @result
+
+    @result
   end
 
 
@@ -488,4 +491,6 @@ def _reduce_none(val, _values, result)
   val[0]
 end
 
-end   # class HCLParser
+    end   # class Parser
+  end   # module Checker
+end   # module HCL
