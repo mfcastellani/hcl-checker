@@ -1,5 +1,4 @@
-
-class HCLLexer
+class HCL::Checker::Lexer
 option
   independent
 
@@ -51,25 +50,26 @@ rule
                 {MINUS}                   { [:MINUS,        text]}
 
 inner
-
   def lex(input)
     scan_setup(input)
     tokens = []
     while token = next_token
       tokens << token
     end
+
     tokens
   end
 
 
   def to_boolean(input)
-    input =
-      if input =~ /true/
-        true
-      elsif input =~ /false/
-        false
-      end
-    return input
+    case input
+    when /true/
+      true
+    when /false/
+      false
+    else
+      raise "Invalid value for `to_boolean`, expected true/false got #{input}"
+    end
   end
 
 
@@ -93,19 +93,21 @@ inner
     result = ''
     nested = 0
 
-    begin
+    loop do
       case(text = @ss.scan_until(%r{\"|\$\{|\}|\\}))
       when %r{\$\{\z}
         nested += 1
       when %r{\}\z}
-        nested -= 1 if nested > 0
+        nested -= 1 if nested.positive?
       when %r{\\\z}
         result += text.chop + @ss.getch
         next
       end
 
       result += text.to_s
-    end until nested == 0 && text =~ %r{\"\z}
+
+      break if nested.zero? && text =~ %r{\"\z}
+    end
 
     result.chop
   end

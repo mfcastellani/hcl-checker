@@ -4,14 +4,14 @@ RSpec.describe HCL::Checker do
                  'foo = 0.1' \
                  'bar = 1' \
                  '}'
-    expect(HCL::Checker.parse hcl_string).to eq({
-      "provider" => {
-        "foo" => {
-          "foo" => 0.1,
-          "bar" => 1,
-        }
-      }
-    })
+    expect(HCL::Checker.parse(hcl_string)).to eq({
+                                                   'provider' => {
+                                                     'foo' => {
+                                                       'foo' => 0.1,
+                                                       'bar' => 1
+                                                     }
+                                                   }
+                                                 })
   end
 
   it 'try to validate a valid HCL' do
@@ -27,7 +27,7 @@ RSpec.describe HCL::Checker do
                  'Name = "Event {Store} VPC"' \
                  '}' \
                  '}'
-    expect(HCL::Checker.valid? hcl_string).to eq(true)
+    expect(HCL::Checker.valid?(hcl_string)).to eq(true)
   end
 
   it 'try to validate an invalid HCL' do
@@ -43,7 +43,7 @@ RSpec.describe HCL::Checker do
                  'Name = "Event Store VPC", ' \
                  '}' \
                  '}'
-    expect(HCL::Checker.valid? hcl_string).to eq(false)
+    expect(HCL::Checker.valid?(hcl_string)).to eq(false)
   end
 
   it 'try to parse a valid HCL' do
@@ -60,7 +60,7 @@ RSpec.describe HCL::Checker do
                  '}' \
                  '}'
     ret = HCL::Checker.parse hcl_string
-    expect(ret.is_a? Hash).to be(true)
+    expect(ret.is_a?(Hash)).to be(true)
   end
 
   it 'try to parse an invalid HCL' do
@@ -77,8 +77,8 @@ RSpec.describe HCL::Checker do
                  '}' \
                  '}'
     ret = HCL::Checker.parse hcl_string
-    expect(ret).to eq("Parse error at  \"enable_dns_hostnames\" , (invalid token: ,)")
-    expect(HCL::Checker.last_error).to eq("Parse error at  \"enable_dns_hostnames\" , (invalid token: ,)")
+    expect(ret).to eq('Parse error at  "enable_dns_hostnames" , (invalid token: ,)')
+    expect(HCL::Checker.last_error).to eq('Parse error at  "enable_dns_hostnames" , (invalid token: ,)')
   end
 
   it 'try to parse several blocks' do
@@ -91,37 +91,37 @@ RSpec.describe HCL::Checker do
                  '}' \
                  '}'
     ret = HCL::Checker.parse hcl_string
-    expect(ret.is_a? Hash).to be(true)
+    expect(ret.is_a?(Hash)).to be(true)
 
     hcl_string = 'variable "aws_region" {}'
     ret = HCL::Checker.parse hcl_string
-    expect(ret.is_a? Hash).to be(true)
+    expect(ret.is_a?(Hash)).to be(true)
 
     hcl_string = 'variable "base_cidr_block" {' \
                  'description = "A /16 CIDR range definition, such as 10.1.0.0/16, that the VPC will use"' \
                  'default = "10.1.0.0/16"' \
                  '}'
     ret = HCL::Checker.parse hcl_string
-    expect(ret.is_a? Hash).to be(true)
+    expect(ret.is_a?(Hash)).to be(true)
 
     hcl_string = 'variable "availability_zones" {' \
                  'description = "A list of availability zones in which to create subnets"' \
                  'type = list(string)' \
                  '}'
     ret = HCL::Checker.parse hcl_string
-    expect(ret.is_a? Hash).to be(true)
+    expect(ret.is_a?(Hash)).to be(true)
 
     hcl_string = 'provider "aws" {' \
                  'region = var.aws_region' \
                  '}'
     ret = HCL::Checker.parse hcl_string
-    expect(ret.is_a? Hash).to be(true)
+    expect(ret.is_a?(Hash)).to be(true)
 
     hcl_string = 'resource "aws_vpc" "main" {' \
                  'cidr_block = var.base_cidr_block' \
                  '}'
     ret = HCL::Checker.parse hcl_string
-    expect(ret.is_a? Hash).to be(true)
+    expect(ret.is_a?(Hash)).to be(true)
   end
 
   xit 'try to parse blocks with comments inside' do
@@ -143,6 +143,6 @@ RSpec.describe HCL::Checker do
                  'cidr_block = cidrsubnet(aws_vpc.main.cidr_block, 4, count.index+1)' \
                  '}'
     ret = HCL::Checker.parse hcl_string
-    expect(ret.is_a? Hash).to be(true)
+    expect(ret.is_a?(Hash)).to be(true)
   end
 end
