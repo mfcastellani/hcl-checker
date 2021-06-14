@@ -7,7 +7,7 @@ source 'https://rubygems.org'
 # with the use of the libxml2 library may be vulnerable to a denial of service attack due
 # to a crash of the application.
 # Nokogiri >= 1.8.5 solves this problem
-gem 'nokogiri', '>= 1.10.8'
+gem 'nokogiri', '>= 1.11.4'
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 

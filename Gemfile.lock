@@ -12,9 +12,10 @@ GEM
       rkelly-remix
     json (2.3.1)
     metasm (1.0.4)
-    mini_portile2 (2.4.0)
-    nokogiri (1.10.10)
-      mini_portile2 (~> 2.4.0)
+    mini_portile2 (2.5.3)
+    nokogiri (1.11.7)
+      mini_portile2 (~> 2.5.0)
+      racc (~> 1.4)
     racc (1.5.0)
     rake (12.3.3)
     rb-readline (0.5.5)
@@ -45,9 +46,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 2.1.4)
+  bundler (~> 2.2.10)
   hcl-checker!
-  nokogiri (>= 1.10.8)
+  nokogiri (>= 1.11.4)
   racc (= 1.5.0)
   rake (~> 12.3.3)
   rex (= 2.0.12)
@@ -55,4 +56,4 @@ DEPENDENCIES
   rspec (~> 3.0)
 
 BUNDLED WITH
-   2.1.4
+   2.2.20

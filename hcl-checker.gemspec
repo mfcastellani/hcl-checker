@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
   spec.required_ruby_version = '>= 2.5.0'
 
-  spec.add_development_dependency 'bundler', '~> 2.1.4'
+  spec.add_development_dependency 'bundler', '~> 2.2.10'
   spec.add_development_dependency 'racc', '1.5.0'
   spec.add_development_dependency 'rake', '~> 12.3.3'
   spec.add_development_dependency 'rex', '2.0.12'
@@ -27,10 +27,12 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '~> 3.0'
 
   spec.post_install_message = '
-Hello, me again. After several contacts of users of this gem requesting that
-the module name be kept only as HCL, instead of HCL1 and HCL2, I went back and
-kept it. Sorry for those who eventually switched from HCL to HCL1. And thanks to
-everyone who got in touch justifying why my change would be bad for all users.
+Hello, me again. This version fixes: 
+
+- Add support for multiple elements of the same type
+- Fix bug where empty objects and empty lists were being parsed as nil
+- Update bundler version
+- Update nokogiri version
 
 Thank you :)
 '
