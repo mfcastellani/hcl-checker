@@ -14,6 +14,6 @@ RSpec.describe HCL::Checker do
         },
       }
     )
-    it("should parse") { expect(HCL::Checker.valid? hcl_string).to eq(true) }
+    it('should parse') { expect(HCL::Checker.valid?(hcl_string)).to eq(true) }
   end
 end
