@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
 Hello, me again. This version fixes:
 
 - Update dependencies due security issues
+- Support interpolation only expression list
 
 Thank you :)
 '
