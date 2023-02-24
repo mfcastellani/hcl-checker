@@ -17,9 +17,9 @@ Gem::Specification.new do |spec|
     f.match(%r{^(test|spec|features)/})
   end
   spec.require_paths = ['lib']
-  spec.required_ruby_version = '>= 2.5.0'
+  spec.required_ruby_version = '>= 2.7.0'
 
-  spec.add_development_dependency 'bundler', '~> 2.3.13'
+  spec.add_development_dependency 'bundler', '~> 2.4.7'
   spec.add_development_dependency 'racc', '1.5.0'
   spec.add_development_dependency 'rake', '~> 12.3.3'
   spec.add_development_dependency 'rex', '2.0.12'
@@ -29,8 +29,7 @@ Gem::Specification.new do |spec|
   spec.post_install_message = '
 Hello, me again. This version fixes:
 
-- Update dependencies due security issues
-- Support interpolation only expression list
+- Update nokogiri due security issues
 
 Thank you :)
 '
