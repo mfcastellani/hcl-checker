@@ -6,55 +6,39 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    diff-lcs (1.5.0)
-    filesize (0.2.0)
-    jsobfu (0.4.2)
-      rkelly-remix
-    json (2.6.1)
-    metasm (1.0.5)
-    nokogiri (1.14.2-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.14.2-x86_64-darwin)
-      racc (~> 1.4)
-    racc (1.5.0)
-    rake (12.3.3)
-    rb-readline (0.5.5)
-    rex (2.0.12)
-      filesize (~> 0)
-      jsobfu (~> 0)
-      json (~> 2)
-      metasm (~> 1)
-      nokogiri (~> 1)
-      rb-readline (~> 0)
-    rexical (1.0.7)
-    rkelly-remix (0.0.7)
-    rspec (3.11.0)
-      rspec-core (~> 3.11.0)
-      rspec-expectations (~> 3.11.0)
-      rspec-mocks (~> 3.11.0)
-    rspec-core (3.11.0)
-      rspec-support (~> 3.11.0)
-    rspec-expectations (3.11.0)
+    diff-lcs (1.6.2)
+    getoptlong (0.2.1)
+    racc (1.8.1)
+    rake (13.4.2)
+    rexical (1.0.8)
+      getoptlong
+    rspec (3.13.2)
+      rspec-core (~> 3.13.0)
+      rspec-expectations (~> 3.13.0)
+      rspec-mocks (~> 3.13.0)
+    rspec-core (3.13.6)
+      rspec-support (~> 3.13.0)
+    rspec-expectations (3.13.5)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.11.0)
-    rspec-mocks (3.11.1)
+      rspec-support (~> 3.13.0)
+    rspec-mocks (3.13.8)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.11.0)
-    rspec-support (3.11.0)
+      rspec-support (~> 3.13.0)
+    rspec-support (3.13.7)
 
 PLATFORMS
-  arm64-darwin-21
-  x86_64-darwin-21
+  aarch64-linux-gnu
+  arm64-darwin
+  x86_64-darwin
+  x86_64-linux-gnu
 
 DEPENDENCIES
-  bundler (~> 2.4.7)
+  bundler (~> 2.4)
   hcl-checker!
-  nokogiri (>= 1.14.2)
-  racc (= 1.5.0)
-  rake (~> 12.3.3)
-  rex (= 2.0.12)
-  rexical (>= 1.0.7)
+  racc (~> 1.8)
+  rake (~> 13.0)
+  rexical (>= 1.0.8)
   rspec (~> 3.0)
 
 BUNDLED WITH
-   2.4.7
+   2.4.22
