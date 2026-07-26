@@ -10,11 +10,8 @@ module HCL
       attr_accessor :last_error
 
       def valid?(value)
-        ret = HCL::Checker::Parser.new.parse(value)
-        return true if ret.is_a? Hash
-
-        false
-      rescue Racc::ParseError => e
+        HCL::Checker::Parser.new.parse(value).is_a?(Hash)
+      rescue Racc::ParseError, HCL::Checker::Lexer::ScanError => e
         @last_error = e.message
 
         false
@@ -24,7 +21,7 @@ module HCL
         raise ArgumentError, "Invalid duplicate mode #{duplicate_mode}, must be one of #{VALID_DUPLICATE_MODES}" unless VALID_DUPLICATE_MODES.include?(duplicate_mode)
 
         HCL::Checker::Parser.new.parse(value, duplicate_mode)
-      rescue Racc::ParseError => e
+      rescue Racc::ParseError, HCL::Checker::Lexer::ScanError => e
         @last_error = e.message
 
         e.message

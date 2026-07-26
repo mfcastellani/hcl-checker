@@ -71,17 +71,29 @@ class HCL::Checker::Lexer
                   when (text = @ss.scan(/true|false/))
                      action { [:BOOL,         to_boolean(text)]}
 
-                  when (text = @ss.scan(/\-?\d+\.\d+/))
+                  when (text = @ss.scan(/null(?![a-zA-Z0-9_\-])/))
+                     action { [:NULL,         text]}
+
+                  when (text = @ss.scan(/for(?![a-zA-Z0-9_\-])/))
+                     action { [:FOR,          text]}
+
+                  when (text = @ss.scan(/in(?![a-zA-Z0-9_\-])/))
+                     action { [:IN,           text]}
+
+                  when (text = @ss.scan(/if(?![a-zA-Z0-9_\-])/))
+                     action { [:IF,           text]}
+
+                  when (text = @ss.scan(/\d+(\.\d+)?[eE][-+]?\d+|\d+\.\d+/))
                      action { [:FLOAT,        text.to_f] }
 
-                  when (text = @ss.scan(/-?\d+/))
+                  when (text = @ss.scan(/\d+/))
                      action { [:NUMBER,       text.to_i] }
 
                   when (text = @ss.scan(/\"/))
                      action { [:STRING,       consume_string(text)] }
 
                   when (text = @ss.scan(/\<<\-?/))
-                     action { [:STRING,       consume_heredoc] }
+                     action { [:STRING,       consume_heredoc(text.end_with?('-'))] }
 
                   when (text = @ss.scan(/\{/))
                      action { [:LEFTBRACE,        text]}
@@ -104,14 +116,65 @@ class HCL::Checker::Lexer
                   when (text = @ss.scan(/\,/))
                      action { [:COMMA,        text]}
 
-                  when (text = @ss.scan(/[a-zA-Z_][a-zA-Z0-9_\-\.]*/))
+                  when (text = @ss.scan(/[a-zA-Z_][a-zA-Z0-9_\-]*/))
                      action { [:IDENTIFIER,   text]}
+
+                  when (text = @ss.scan(/\=\=/))
+                     action { [:EQEQ,         text]}
+
+                  when (text = @ss.scan(/\!\=/))
+                     action { [:NEQ,          text]}
+
+                  when (text = @ss.scan(/\<\=/))
+                     action { [:LE,           text]}
+
+                  when (text = @ss.scan(/\>\=/))
+                     action { [:GE,           text]}
+
+                  when (text = @ss.scan(/\=\>/))
+                     action { [:ARROW,        text]}
+
+                  when (text = @ss.scan(/\</))
+                     action { [:LT,           text]}
+
+                  when (text = @ss.scan(/\>/))
+                     action { [:GT,           text]}
 
                   when (text = @ss.scan(/\=/))
                      action { [:EQUAL,        text]}
 
                   when (text = @ss.scan(/\-/))
                      action { [:MINUS,        text]}
+
+                  when (text = @ss.scan(/\+/))
+                     action { [:PLUS,         text]}
+
+                  when (text = @ss.scan(/\*/))
+                     action { [:STAR,         text]}
+
+                  when (text = @ss.scan(/\//))
+                     action { [:SLASH,        text]}
+
+                  when (text = @ss.scan(/\%/))
+                     action { [:PERCENT,      text]}
+
+                  when (text = @ss.scan(/\&\&/))
+                     action { [:ANDAND,       text]}
+
+                  when (text = @ss.scan(/\|\|/))
+                     action { [:OROR,         text]}
+
+                  when (text = @ss.scan(/\?/))
+                     action { [:QUESTION,     text]}
+
+                  when (text = @ss.scan(/\:/))
+                     action { [:COLON,        text]}
+
+                  when (text = @ss.scan(/\./))
+                     action { [:PERIOD,       text]}
+
+                  when (text = @ss.scan(/\!/))
+                     action { [:BANG,         text]}
 
           
           else
@@ -125,34 +188,36 @@ class HCL::Checker::Lexer
           token
         end  # def _next_token
 
+  attr_reader :token_positions
   def lex(input)
     scan_setup(input)
     tokens = []
+    @token_positions = []
     while token = next_token
       tokens << token
+      @token_positions << current_position
     end
     tokens
   end
+  def current_position
+    consumed = @ss.string[0...@ss.pos]
+    line = consumed.count("\n") + 1
+    column = consumed.length - (consumed.rindex("\n") || -1)
+    [line, column]
+  end
   def to_boolean(input)
-    case input
-    when /true/
-      true
-    when /false/
-      false
-    else
-      raise "Invalid value for `to_boolean`, expected true/false got #{input}"
-    end
+    input == 'true'
   end
   def consume_comment(input)
     nested = 1
     until nested.zero?
       case(text = @ss.scan_until(%r{/\*|\*/|\z}) )
       when %r{/\*\z}
-        nested =+ 1
+        nested += 1
       when %r{\*/\z}
         nested -= 1
       else
-        break
+        raise ScanError, 'unterminated block comment'
       end
     end
   end
@@ -160,13 +225,17 @@ class HCL::Checker::Lexer
     result = ''
     nested = 0
     loop do
-      case(text = @ss.scan_until(%r{\"|\$\{|\}|\\}))
+      text = @ss.scan_until(%r{\"|\$\{|%\{|\}|\\})
+      raise ScanError, 'unterminated string' if text.nil?
+      case text
       when %r{\$\{\z}
+        nested += 1
+      when %r{%\{\z}
         nested += 1
       when %r{\}\z}
         nested -= 1 if nested.positive?
       when %r{\\\z}
-        result += text.chop + @ss.getch
+        result += text.chop + decode_escape
         next
       end
       result += text.to_s
@@ -174,9 +243,38 @@ class HCL::Checker::Lexer
     end
     result.chop
   end
-  def consume_heredoc
-      token = Regexp.new @ss.scan_until(%r{\n})
-      document = @ss.scan_until(token)
-      document.chop
+  def decode_escape
+    char = @ss.getch
+    case char
+    when 'n' then "\n"
+    when 't' then "\t"
+    when 'r' then "\r"
+    when '"' then '"'
+    when '\\' then '\\'
+    when 'u'
+      hex = @ss.scan(/[0-9a-fA-F]{4}/)
+      hex ? [hex.to_i(16)].pack('U') : 'u'
+    when 'U'
+      hex = @ss.scan(/[0-9a-fA-F]{8}/)
+      hex ? [hex.to_i(16)].pack('U') : 'U'
+    else
+      char.to_s
+    end
+  end
+  def consume_heredoc(indented)
+    marker_line = @ss.scan_until(%r{\n})
+    raise ScanError, 'unterminated heredoc: missing marker' if marker_line.nil?
+    marker = marker_line.strip
+    closing = /^[ \t]*#{Regexp.escape(marker)}[ \t]*(?:\n|\z)/
+    raw = @ss.scan_until(closing)
+    raise ScanError, "unterminated heredoc: missing closing marker '#{marker}'" if raw.nil?
+    content = raw.sub(closing, '')
+    indented ? dedent(content) : content
+  end
+  def dedent(text)
+    lines = text.split("\n", -1)
+    indents = lines.reject { |line| line.strip.empty? }.map { |line| line[/\A[ \t]*/].length }
+    indent = indents.min || 0
+    lines.map { |line| line.strip.empty? ? line : line[indent..] }.join("\n")
   end
 end # class

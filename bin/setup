@@ -3,6 +3,12 @@ set -euo pipefail
 IFS=$'\n\t'
 set -vx
 
+# Installs gems into ./vendor/bundle instead of the system gem directory.
+# On a Ruby installed via a distro package (e.g. apt's ruby3.3), the system
+# gem directory is usually root-owned, so a plain `bundle install` fails
+# with a Bundler::PermissionError unless this repo is configured to use a
+# local, writable path instead.
+bundle config set --local path 'vendor/bundle'
 bundle install
 
 # Do any other automated setup that you need to do here

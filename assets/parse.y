@@ -1,5 +1,6 @@
 class HCL::Checker::Parser
 token BOOL
+      NULL
       FLOAT
       NUMBER
       COMMA
@@ -8,6 +9,25 @@ token BOOL
       EQUAL
       STRING
       MINUS
+      PLUS
+      STAR
+      SLASH
+      PERCENT
+      ANDAND
+      OROR
+      EQEQ
+      NEQ
+      LT
+      GT
+      LE
+      GE
+      BANG
+      QUESTION
+      COLON
+      ARROW
+      FOR
+      IN
+      IF
       LEFTBRACE
       RIGHTBRACE
       LEFTBRACKET
@@ -17,6 +37,18 @@ token BOOL
       PERIOD
       EPLUS
       EMINUS
+
+prechigh
+  nonassoc UMINUS
+  right    BANG
+  left     STAR SLASH PERCENT
+  left     PLUS MINUS
+  nonassoc LT GT LE GE
+  nonassoc EQEQ NEQ
+  left     ANDAND
+  left     OROR
+  right    QUESTION COLON
+preclow
 
 rule
   target: top { @result = flatten_objectlist(val[0])}
@@ -42,6 +74,15 @@ rule
        { result = flatten_objectlist(val[1]) }
   |  LEFTBRACE RIGHTBRACE
        { return {} }
+  |  LEFTBRACE forobjectexpr RIGHTBRACE
+       { result = val[1] }
+  ;
+
+  forobjectexpr:
+     FOR foriter COLON expr ARROW expr
+       { result = "for #{val[1]} : #{render(val[3])} => #{render(val[5])}" }
+  |  FOR foriter COLON expr ARROW expr IF expr
+       { result = "for #{val[1]} : #{render(val[3])} => #{render(val[5])} if #{render(val[7])}" }
   ;
 
   objectkey:
@@ -49,25 +90,101 @@ rule
        { result = val[0] }
   |  STRING
        { result = val[0] }
+  |  FOR
+       { result = val[0] }
+  |  IN
+       { result = val[0] }
+  |  IF
+       { result = val[0] }
+  |  NULL
+       { result = val[0] }
   ;
 
   objectitem:
-     objectkey EQUAL number
-       { result = val[0], val[2] }
-  |  objectkey EQUAL BOOL
-       { result = val[0], val[2] }
-  |  objectkey EQUAL STRING
-       { result = val[0], val[2] }
-  |  objectkey EQUAL object
-       { result = val[0], val[2] }
-  |  objectkey EQUAL list
-       { result = val[0], val[2] }
-  |  objectkey EQUAL IDENTIFIER LEFTPARENTHESES IDENTIFIER RIGHTPARENTHESES
-       { result = val[0], "#{val[2]}(#{val[4]})" }
-  |  objectkey EQUAL IDENTIFIER
+     objectkey EQUAL expr
        { result = val[0], val[2] }
   |  block
        { result = val[0] }
+  ;
+
+  expr:
+     primary
+       { result = val[0] }
+  |  expr PLUS expr
+       { result = "#{render(val[0])} + #{render(val[2])}" }
+  |  expr MINUS expr
+       { result = "#{render(val[0])} - #{render(val[2])}" }
+  |  expr STAR expr
+       { result = "#{render(val[0])} * #{render(val[2])}" }
+  |  expr SLASH expr
+       { result = "#{render(val[0])} / #{render(val[2])}" }
+  |  expr PERCENT expr
+       { result = "#{render(val[0])} % #{render(val[2])}" }
+  |  expr ANDAND expr
+       { result = "#{render(val[0])} && #{render(val[2])}" }
+  |  expr OROR expr
+       { result = "#{render(val[0])} || #{render(val[2])}" }
+  |  expr EQEQ expr
+       { result = "#{render(val[0])} == #{render(val[2])}" }
+  |  expr NEQ expr
+       { result = "#{render(val[0])} != #{render(val[2])}" }
+  |  expr LT expr
+       { result = "#{render(val[0])} < #{render(val[2])}" }
+  |  expr GT expr
+       { result = "#{render(val[0])} > #{render(val[2])}" }
+  |  expr LE expr
+       { result = "#{render(val[0])} <= #{render(val[2])}" }
+  |  expr GE expr
+       { result = "#{render(val[0])} >= #{render(val[2])}" }
+  |  expr QUESTION expr COLON expr
+       { result = "#{render(val[0])} ? #{render(val[2])} : #{render(val[4])}" }
+  |  BANG expr
+       { result = "!#{render(val[1])}" }
+  |  MINUS expr =UMINUS
+       { result = negate(val[1]) }
+  ;
+
+  primary:
+     traversal
+       { result = val[0] }
+  |  number
+       { result = val[0] }
+  |  BOOL
+       { result = val[0] }
+  |  NULL
+       { result = nil }
+  |  STRING
+       { result = val[0] }
+  |  list
+       { result = val[0] }
+  |  object
+       { result = val[0] }
+  |  LEFTPARENTHESES expr RIGHTPARENTHESES
+       { result = "(#{render(val[1])})" }
+  ;
+
+  traversal:
+     IDENTIFIER
+       { result = val[0] }
+  |  traversal PERIOD IDENTIFIER
+       { result = "#{val[0]}.#{val[2]}" }
+  |  traversal PERIOD STAR
+       { result = "#{val[0]}.*" }
+  |  traversal LEFTBRACKET expr RIGHTBRACKET
+       { result = "#{val[0]}[#{render(val[2])}]" }
+  |  traversal LEFTBRACKET STAR RIGHTBRACKET
+       { result = "#{val[0]}[*]" }
+  |  traversal LEFTPARENTHESES RIGHTPARENTHESES
+       { result = "#{val[0]}()" }
+  |  traversal LEFTPARENTHESES arglist RIGHTPARENTHESES
+       { result = "#{val[0]}(#{val[2].map { |a| render(a) }.join(', ')})" }
+  ;
+
+  arglist:
+     expr
+       { result = [val[0]] }
+  |  arglist COMMA expr
+       { result = val[0] << val[2] }
   ;
 
   block:
@@ -82,6 +199,14 @@ rule
        { result = val[0] }
   |  STRING
        { result = val[0] }
+  |  FOR
+       { result = val[0] }
+  |  IN
+       { result = val[0] }
+  |  IF
+       { result = val[0] }
+  |  NULL
+       { result = val[0] }
   ;
 
   list:
@@ -89,6 +214,22 @@ rule
        { result = val[1] }
   |  LEFTBRACKET RIGHTBRACKET
        { return [] }
+  |  LEFTBRACKET forlistexpr RIGHTBRACKET
+       { result = val[1] }
+  ;
+
+  forlistexpr:
+     FOR foriter COLON expr
+       { result = "for #{val[1]} : #{render(val[3])}" }
+  |  FOR foriter COLON expr IF expr
+       { result = "for #{val[1]} : #{render(val[3])} if #{render(val[5])}" }
+  ;
+
+  foriter:
+     IDENTIFIER IN expr
+       { result = "#{val[0]} in #{render(val[2])}" }
+  |  IDENTIFIER COMMA IDENTIFIER IN expr
+       { result = "#{val[0]}, #{val[2]} in #{render(val[4])}" }
   ;
 
   listitems:
@@ -101,15 +242,7 @@ rule
   ;
 
   listitem:
-     number
-       { result = val[0] }
-  |  STRING
-       { result = val[0] }
-  | list
-       { result = val[0] }
-  | object
-       { result = val[0] }
-  | IDENTIFIER
+     expr
        { result = val[0] }
   ;
 
@@ -162,15 +295,21 @@ require_relative 'lexer'
 
 
   def on_error(error_token_id, error_value, value_stack)
-    error_message = value_stack.to_s.split(',').last.gsub(']', '')
-    header = "Parse error at #{error_message} #{error_value} (invalid token: #{error_value})"
-    raise Racc::ParseError, header
+    line, column = @current_position
+    message = "Parse error on line #{line}, column #{column}: unexpected #{error_value.inspect}"
+    message += " (after #{value_stack.last.inspect})" unless value_stack.empty?
+
+    raise Racc::ParseError, message
   end
 
 
   def parse(input, duplicate_mode = :array)
     @duplicate_mode = duplicate_mode
-    @lexer = HCL::Checker::Lexer.new.lex(input)
+
+    lexer = HCL::Checker::Lexer.new
+    @lexer = lexer.lex(input)
+    @lexer_positions = lexer.token_positions
+
     do_parse
 
     @result
@@ -178,7 +317,16 @@ require_relative 'lexer'
 
 
   def next_token
+    @current_position = @lexer_positions.shift
     @lexer.shift
+  end
+
+  def negate(value)
+    value.is_a?(Numeric) ? -value : "-#{render(value)}"
+  end
+
+  def render(value)
+    value.nil? ? 'null' : value.to_s
   end
 
   def deep_merge(hash1, hash2)
